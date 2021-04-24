@@ -24,7 +24,7 @@ data "aws_subnet" "public" {
 }
 
 data "template_file" "init" {
-  template = file("${path.module}/init.sh")
+  template = file("${path.module}/scripts/init.sh")
 }
 ###########
 # MODULES
