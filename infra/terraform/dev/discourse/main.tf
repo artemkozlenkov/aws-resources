@@ -1,10 +1,10 @@
 ###########
 # VARIABLES
 ###########
+variable "ami_id" {}
 variable "aws_region" {
   default = "eu-central-1"
 }
-variable "ami_id" {}
 variable "instance_type" {
   default = "t2.micro"
 }
