@@ -4,6 +4,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
+variable "fqdn" {
+  type        = string
+  description = "fully qualified domain name"
+}
+
 ## Route 53 hosten zone
 data "aws_route53_zone" "main" {
   name         = var.fqdn
@@ -53,4 +58,8 @@ resource "aws_acm_certificate_validation" "website_cert_validation" {
 
   certificate_arn         = aws_acm_certificate.website_certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.website_record: record.fqdn]
+}
+
+output "route53_zone" {
+  value = aws_route53_record.website_record
 }
