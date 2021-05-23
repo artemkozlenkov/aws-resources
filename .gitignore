@@ -1,0 +1,17 @@
+# infra/terraform/dev/discourse/.terraform/
+# infra/terraform/dev/keys/.terraform/
+# infra/terraform/dev/keys/terraform.tfstate
+# infra/terraform/dev/network/.terraform/
+# infra/terraform/dev/network/terraform.tfstate
+# infra/terraform/dev/network/terraform.tfstate.backup
+# infra/terraform/kozlenkovde/.terraform
+# infra/terraform/kozlenkovde/terraform.tfvars
+# infra/terraform/dev/discourse/.terraform
+# infra/terraform/dev/discourse/.terraform.lock.hcl
+# infra/terraform/dev/keys/.terraform.lock.hcl
+# infra/terraform/dev/network/.terraform.lock.hcl
+
+**/.terraform
+**/.terraform.*
+**/terraform.tf*
+**/terraform.tf*
