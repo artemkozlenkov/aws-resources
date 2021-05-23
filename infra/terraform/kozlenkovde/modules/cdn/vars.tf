@@ -6,4 +6,4 @@ variable "fqdn" {
 variable "bucket_root" {}
 variable "bucket_log" {}
 
-variable "acm" {}
+variable "website_certificate_arn" {}

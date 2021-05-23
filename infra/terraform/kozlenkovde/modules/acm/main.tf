@@ -63,3 +63,7 @@ resource "aws_acm_certificate_validation" "website_cert_validation" {
 output "route53_zone" {
   value = aws_route53_record.website_record
 }
+
+output "website_certificate_arn" {	
+  value = aws_acm_certificate.website_certificate.arn	
+} 	

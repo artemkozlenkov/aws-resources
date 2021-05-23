@@ -28,7 +28,7 @@ module "cdn" {
   bucket_root     = module.s3_buckets.bucket_main
   bucket_log      = module.s3_buckets.bucket_log
 
-  acm = module.acm
+  website_certificate_arn = module.acm.website_certificate_arn
 }
 
 # route53 module
