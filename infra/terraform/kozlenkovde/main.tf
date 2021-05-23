@@ -37,5 +37,4 @@ module "route53" {
   fqdn          = var.fqdn
 
   website_cdn_root        = module.cdn.cdn_root
-  website_cdn_forum       = module.cdn.cdn_forum
 }

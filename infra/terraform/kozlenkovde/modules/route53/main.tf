@@ -1,6 +1,5 @@
 locals {
   redirect_fqdn = "www.${var.fqdn}"
-  forum_fqdn = "forum.${var.fqdn}"
 }
 
 ## Route 53 hosten zone
