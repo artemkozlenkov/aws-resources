@@ -37,7 +37,7 @@ data "aws_vpc" "selected" {
     Name = "cluster"
   }
 }
-data "aws_subnet_id" "public" {
+data "aws_subnet" "public" {
   filter {
     name   = "tag:Name"
     values = ["public-subnet"]
