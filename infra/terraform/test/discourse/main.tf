@@ -14,18 +14,17 @@ locals {
     Owner       = "user"
     Environment = "dev"
   }
-
-  user_data = <<-EOT
-  #!/bin/bash
-  echo "Hello Terraform!"
-  EOT
 }
 
 data "aws_ami" "discourse" {
   executable_users = ["self"]
   most_recent = true
-  name_regex  = "*discourse*"
   owners = ["self"]
+
+    filter {
+      name   = "name"
+      values = ["*discourse*"]
+  }
 }
 
 data "aws_vpc" "cluster" {
