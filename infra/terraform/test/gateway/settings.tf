@@ -22,8 +22,11 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "kozlenkovde"
     workspaces {
-      name = "discourse"
+      name = "gateway"
     }
   }
 }
 
+variable "ami_id" {}
+variable "aws_region" {}
+variable "instance_type" {}
