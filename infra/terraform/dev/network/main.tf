@@ -5,11 +5,11 @@ locals {
 
 variable "private-subnets" {
   type = list(string)
-  default = ["10.1.1.0/24"/*, "10.1.2.0/24"*/]
+  default = ["10.1.1.0/24", "10.1.2.0/24"]
 }
 variable "public-subnets" {
   type = list(string)
-  default = ["10.1.11.0/24"/*, "10.1.12.0/24"*/]
+  default = ["10.1.11.0/24", "10.1.12.0/24"]
 }
 
 variable "aws_region" {
@@ -28,7 +28,7 @@ module "vpc" {
 
   cidr = "10.1.0.0/16"
 
-  azs = [data.aws_availability_zones.available.names[0]]
+  azs = data.aws_availability_zones.available.names
 
   private_subnets = var.private-subnets
   private_subnet_tags = {
