@@ -21,9 +21,14 @@ data "aws_ami" "discourse" {
   most_recent = true
   owners = ["self"]
 
-    filter {
-      name   = "name"
-      values = ["*-discourse-*"]
+//    filter {
+//      name   = "name"
+//      values = ["*-discourse-*"]
+//  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 }
 
