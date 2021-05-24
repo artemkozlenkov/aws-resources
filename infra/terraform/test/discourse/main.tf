@@ -24,13 +24,13 @@ locals {
 data "aws_ami" "discourse" {
   executable_users = ["self"]
   most_recent = true
-  name_regex  = "^discourse-\\d{3}"
+  name_regex  = "*discourse*"
   owners = ["self"]
 }
 
 data "aws_vpc" "cluster" {
   filter {
-    name   = "Name"
+    name   = "tag:Name"
     values = ["cluster"]
   }
 }
@@ -38,7 +38,7 @@ data "aws_vpc" "cluster" {
 data "aws_subnet_ids" "private" {
   vpc_id = data.aws_vpc.cluster.id
   filter {
-    name   = "Name"
+    name   = "tag:Name"
     values = ["private*"]
   }
 }
@@ -46,7 +46,7 @@ data "aws_subnet_ids" "private" {
 data "aws_subnet_ids" "public" {
   vpc_id = data.aws_vpc.cluster.id
   filter {
-    name   = "Name"
+    name   = "tag:Name"
     values = ["public*"]
   }
 }
