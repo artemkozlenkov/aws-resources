@@ -44,9 +44,6 @@ data "aws_subnet_ids" "public" {
   }
   vpc_id = data.aws_vpc.selected.id
 }
-data "template_file" "init" {
-  template = file("${path.module}/scripts/init.sh")
-}
 data "aws_ami" "ubuntu" {
   most_recent = true
 
