@@ -22,7 +22,7 @@ data "aws_ami" "discourse" {
   owners = ["self"]
 
     filter {
-      name   = "name"
+      name   = "tag:Name"
       values = ["*discourse*"]
   }
 }
