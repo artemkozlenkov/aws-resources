@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.aws_region
+  region = "eu-central-1"
   # Make it faster by skipping something
   skip_get_ec2_platforms      = true
   skip_metadata_api_check     = true
@@ -13,7 +13,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 3.40.0"
+      version = "~> 2.57"
     }
   }
 
@@ -22,13 +22,8 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "kozlenkovde"
     workspaces {
-      name = "discourse-test"
+      name = "discourse"
     }
   }
 }
 
-variable "aws_region" {}
-variable "asg_name" {}
-variable "instance_type" {
-  default = "t2.micro"
-}

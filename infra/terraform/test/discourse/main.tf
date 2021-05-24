@@ -12,7 +12,7 @@ locals {
 
   tags_as_map = {
     Owner       = "user"
-    Environment = "dev"
+    Environment = "test"
   }
 }
 
@@ -176,7 +176,7 @@ module "default_lt" {
   create_lt = true
 
   image_id      = data.aws_ami.discourse.id
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
 
   user_data = <<-EOF
               #!/bin/bash
