@@ -17,7 +17,6 @@ locals {
 }
 
 data "aws_ami" "discourse" {
-  executable_users = ["self"]
   most_recent = true
   owners = ["self"]
 
