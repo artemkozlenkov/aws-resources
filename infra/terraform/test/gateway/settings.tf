@@ -27,6 +27,38 @@ terraform {
   }
 }
 
-variable "ami_id" {}
 variable "aws_region" {}
-variable "instance_type" {}
+variable "instance_type" {
+  default = "t2.micro"
+}
+
+data "aws_vpc" "selected" {
+  tags = {
+    Name = "cluster"
+  }
+}
+data "aws_subnet_ids" "public" {
+  filter {
+    name   = "tag:Name"
+    values = ["public-subnet"]
+  }
+  vpc_id = data.aws_vpc.selected.id
+}
+data "template_file" "init" {
+  template = file("${path.module}/scripts/init.sh")
+}
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}

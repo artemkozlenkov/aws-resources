@@ -1,20 +1,3 @@
-data "aws_vpc" "selected" {
-  tags = {
-    Name = "cluster"
-  }
-}
-data "aws_subnet_ids" "public" {
-  filter {
-    name   = "tag:Name"
-    values = ["public-subnet"]
-  }
-  vpc_id = data.aws_vpc.selected.id
-}
-
-data "template_file" "init" {
-  template = file("${path.module}/scripts/init.sh")
-}
-
 module "security_groups" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "3.18.0"
@@ -37,7 +20,7 @@ module "this" {
 
   count = 1
 
-  ami           = var.ami_id
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   name          = "dicourse-instance"
   user_data = <<-EOF
