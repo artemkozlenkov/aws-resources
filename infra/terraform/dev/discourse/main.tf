@@ -9,7 +9,7 @@ variable "instance_type" {
   default = "t2.micro"
 }
 ###########
-# DATA
+# DATA    #
 ###########
 data "aws_vpc" "selected" {
   tags = {
@@ -27,7 +27,7 @@ data "template_file" "init" {
   template = file("${path.module}/scripts/init.sh")
 }
 ###########
-# MODULES
+# MODULES #
 ###########
 module "security_groups" {
   source  = "terraform-aws-modules/security-group/aws"
