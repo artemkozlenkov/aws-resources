@@ -1,6 +1,6 @@
 locals {
-  name   = "example-asg"
-  region = "eu-west-1"
+  name   = var.asg_name
+  region = var.aws_region
 
   tags = [
     {

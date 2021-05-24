@@ -28,4 +28,4 @@ terraform {
 }
 
 variable "aws_region" {}
-variable "tfc_workspace" {}
+variable "asg_name" {}
