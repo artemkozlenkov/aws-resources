@@ -7,7 +7,7 @@ module "security_groups" {
 
   computed_ingress_rules           = ["ssh-tcp"]
   number_of_computed_ingress_rules = 1
-  ingress_cidr_blocks              = [data.aws_vpc.selected.cidr_block]
+  ingress_cidr_blocks              = ["0.0.0.0/0"]
 
   computed_egress_rules           = ["all-all"]
   number_of_computed_egress_rules = 1
@@ -23,7 +23,7 @@ module "this" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   name          = "gateway"
-  user_data = <<-EOF
+  user_data     = <<-EOF
 sudo apt update; sudo apt upgrade -y; iptables -F; service sshd restart;
 EOF
 
