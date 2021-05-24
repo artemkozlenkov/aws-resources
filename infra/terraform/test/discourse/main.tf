@@ -18,11 +18,11 @@ locals {
 
 data "aws_ami" "discourse" {
   most_recent = true
-  owners = ["self"]
+  owners      = ["self"]
 
-    filter {
-      name   = "name"
-      values = ["*discourse*"]
+  filter {
+    name   = "name"
+    values = ["*discourse*"]
   }
 }
 
@@ -178,12 +178,12 @@ module "default_lt" {
   image_id      = data.aws_ami.discourse.id
   instance_type = var.instance_type
 
-  user_data = <<-EOF
+  user_data   = <<-EOF
               #!/bin/bash
               echo "This is a test discourse-ec2-instance" > index.html
               sudo python2 -m SimpleHTTPServer 80
               EOF
-
+  key_name    = "dev"
   tags        = local.tags
   tags_as_map = local.tags_as_map
 }
