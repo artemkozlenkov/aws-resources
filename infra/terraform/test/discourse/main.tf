@@ -20,14 +20,9 @@ data "aws_ami" "discourse" {
   most_recent = true
   owners = ["self"]
 
-//    filter {
-//      name   = "name"
-//      values = ["*-discourse-*"]
-//  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    filter {
+      name   = "name"
+      values = ["*discourse*"]
   }
 }
 
@@ -90,13 +85,13 @@ resource "aws_iam_service_linked_role" "autoscaling" {
 }
 
 resource "aws_iam_instance_profile" "ssm" {
-  name = "complete-${local.name}"
+  name = "discourse-${local.name}"
   role = aws_iam_role.ssm.name
   tags = local.tags_as_map
 }
 
 resource "aws_iam_role" "ssm" {
-  name = "complete-${local.name}"
+  name = "discourse-${local.name}"
   tags = local.tags_as_map
 
   assume_role_policy = <<-EOT
