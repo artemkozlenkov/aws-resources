@@ -2,6 +2,14 @@ locals {
   name   = "example-asg"
   region = "eu-west-1"
 
+  tags = [
+    {
+      key                 = "Project"
+      value               = "self-hosted-discourse"
+      propagate_at_launch = true
+    }
+  ]
+
   tags_as_map = {
     Owner       = "user"
     Environment = "dev"
@@ -13,6 +21,35 @@ locals {
   EOT
 }
 
+data "aws_ami" "discourse" {
+  executable_users = ["self"]
+  most_recent = true
+  name_regex  = "^discourse-\\d{3}"
+  owners = ["self"]
+}
+
+data "aws_vpc" "cluster" {
+  filter {
+    name   = "Name"
+    values = ["cluster"]
+  }
+}
+
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.cluster.id
+  filter {
+    name   = "Name"
+    values = ["private*"]
+  }
+}
+
+data "aws_subnet_ids" "public" {
+  vpc_id = data.aws_vpc.cluster.id
+  filter {
+    name   = "Name"
+    values = ["public*"]
+  }
+}
 ################################################################################
 # Supporting Resources
 ################################################################################
@@ -23,7 +60,7 @@ module "asg_sg" {
 
   name        = local.name
   description = "A security group"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.cluster
 
   computed_ingress_with_source_security_group_id = [
     {
@@ -81,7 +118,7 @@ module "alb_http_sg" {
   version = "~> 4.0"
 
   name        = "${local.name}-alb-http"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.cluster
   description = "Security group for ${local.name}"
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -95,8 +132,8 @@ module "alb" {
 
   name = local.name
 
-  vpc_id          = module.vpc.vpc_id
-  subnets         = module.vpc.public_subnets
+  vpc_id          = data.aws_vpc.cluster
+  subnets         = data.aws_subnet_ids.public
   security_groups = [module.alb_http_sg.security_group_id]
 
   http_tcp_listeners = [
@@ -131,7 +168,7 @@ module "default_lt" {
   # Autoscaling group
   name = "default-lt-${local.name}"
 
-  vpc_zone_identifier = module.vpc.private_subnets
+  vpc_zone_identifier = data.aws_subnet_ids.private
   min_size            = 0
   max_size            = 1
   desired_capacity    = 1
@@ -140,7 +177,7 @@ module "default_lt" {
   use_lt    = true
   create_lt = true
 
-  image_id      = data.aws_ami.amazon_linux.id
+  image_id      = data.aws_ami.discourse.id
   instance_type = "t3.micro"
 
   tags        = local.tags

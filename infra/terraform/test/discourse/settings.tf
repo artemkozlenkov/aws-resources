@@ -13,7 +13,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 2.57"
+      version = ">= 3.40.0"
     }
   }
 
@@ -22,7 +22,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "kozlenkovde"
     workspaces {
-      name = var.tfc_workspace
+      name = "discourse-test"
     }
   }
 }
