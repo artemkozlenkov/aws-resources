@@ -12,9 +12,7 @@ variable "public-subnets" {
   default = ["10.1.11.0/24", "10.1.12.0/24"]
 }
 
-variable "aws_region" {
-  default = "eu-central-1"
-}
+variable "aws_region" {}
 
 data "aws_availability_zones" "available" {
   state = "available"
