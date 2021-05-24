@@ -132,7 +132,7 @@ module "alb" {
   name = local.name
 
   vpc_id          = data.aws_vpc.cluster.id
-  subnets         = data.aws_subnet_ids.public
+  subnets         = data.aws_subnet_ids.public.ids
   security_groups = [module.alb_http_sg.security_group_id]
 
   http_tcp_listeners = [
@@ -167,7 +167,7 @@ module "default_lt" {
   # Autoscaling group
   name = "default-lt-${local.name}"
 
-  vpc_zone_identifier = data.aws_subnet_ids.private
+  vpc_zone_identifier = data.aws_subnet_ids.private.ids
   min_size            = 0
   max_size            = 1
   desired_capacity    = 1
