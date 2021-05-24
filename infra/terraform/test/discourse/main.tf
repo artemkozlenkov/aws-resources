@@ -23,7 +23,7 @@ data "aws_ami" "discourse" {
 
     filter {
       name   = "name"
-      values = ["*discourse*"]
+      values = ["*-discourse-*"]
   }
 }
 
