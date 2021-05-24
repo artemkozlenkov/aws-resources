@@ -176,7 +176,13 @@ module "default_lt" {
   create_lt = true
 
   image_id      = data.aws_ami.discourse.id
-  instance_type = "t3.micro"
+  instance_type = "t2.micro"
+
+  user_data = <<-EOF
+              #!/bin/bash
+              echo "This is a test discourse-ec2-instance" > index.html
+              sudo python2 -m SimpleHTTPServer 80
+              EOF
 
   tags        = local.tags
   tags_as_map = local.tags_as_map
