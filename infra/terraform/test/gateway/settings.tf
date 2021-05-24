@@ -37,16 +37,13 @@ data "aws_vpc" "selected" {
     Name = "cluster"
   }
 }
-data "aws_subnet_ids" "public-all" {
+data "aws_subnet" "public" {
   filter {
     name   = "tag:Name"
     values = ["public-subnet"]
   }
   vpc_id = data.aws_vpc.selected.id
-}
-data "aws_subnet" "public" {
-  for_each = data.aws_subnet_ids.public-all.ids
-  id       = each.value
+  availability_zone = "eu-central-1a"
 }
 data "aws_ami" "ubuntu" {
   most_recent = true

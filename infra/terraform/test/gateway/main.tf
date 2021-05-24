@@ -31,7 +31,7 @@ EOF
   associate_public_ip_address = true
 
   vpc_security_group_ids = [module.security_groups.this_security_group_id]
-  subnet_id              = data.aws_subnet.public.id[0]
+  subnet_id              = data.aws_subnet.public.id
 
   tags = {
     Terraform   = "true"
