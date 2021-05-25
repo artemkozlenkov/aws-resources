@@ -51,16 +51,15 @@ data "aws_subnet_ids" "public" {
 ################################################################################
 # Supporting Resources
 ################################################################################
-
 module "asg_sg" {
-  source  = "terraform-aws-modules/security-group/aws"
+  source  = "terraform-aws-modules/security-group/aws//modules/http-80"
   version = "~> 4.0"
 
   name        = local.name
   description = "A ${local.name} security group"
   vpc_id      = data.aws_vpc.cluster.id
 
-  ingress_rules           = ["ssh-tcp","http-80"]
+  ingress_rules           = ["http-80-tcp", "ssh-tcp"]
   ingress_cidr_blocks              = ["0.0.0.0/0"]
 
   egress_rules = ["http-80-tcp"]
