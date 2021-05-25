@@ -130,7 +130,7 @@ module "alb" {
 
   vpc_id          = data.aws_vpc.cluster.id
   subnets         = data.aws_subnet_ids.public.ids
-  security_groups = [module.alb_http_sg.security_group_id, module.asg_sg]
+  security_groups = [module.alb_http_sg.security_group_id]
 
   http_tcp_listeners = [
     {
