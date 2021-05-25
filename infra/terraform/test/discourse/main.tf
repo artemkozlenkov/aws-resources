@@ -60,7 +60,7 @@ module "asg_sg" {
   description = "A security group"
   vpc_id      = data.aws_vpc.cluster.id
 
-  computed_ingress_rules           = ["ssh-tcp","http-80-tcp"]
+  computed_ingress_rules           = ["ssh-tcp","http-80"]
   number_of_computed_ingress_rules = 1
   ingress_cidr_blocks              = ["0.0.0.0/0"]
 
@@ -181,8 +181,8 @@ module "default_lt" {
   user_data   = <<-EOF
               #!/bin/bash
               sudo apt update; sudo apt upgrade -y; iptables -F; service sshd restart;
-//              echo "This is a test discourse-ec2-instance" > index.html
-//              python3 -m http.server 80
+              echo "This is a test discourse-ec2-instance" > index.html
+              sudo python3 -m http.server 80
               EOF
   key_name    = "dev"
   tags        = local.tags
