@@ -48,6 +48,13 @@ data "aws_subnet_ids" "public" {
     values = ["public*"]
   }
 }
+
+data "template_file" "init" {
+  template = "${file("${path.module}/init.sh")}"
+  vars = {
+//    consul_address = "${aws_instance.consul.private_ip}"
+  }
+}
 ################################################################################
 # Supporting Resources
 ################################################################################
@@ -163,6 +170,8 @@ module "default_lt" {
 
   security_groups = [module.asg_sg.security_group_id]
 
+  target_group_arns = module.alb.target_group_arns
+
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
   min_size            = 0
   max_size            = 1
@@ -175,12 +184,6 @@ module "default_lt" {
   image_id      = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
-  user_data   = <<-EOF
-              #!/bin/bash
-              sudo apt update; sudo apt upgrade -y; iptables -F; service sshd restart;
-              echo "This is a test discourse-ec2-instance" > index.html
-              sudo python3 -m http.server 80
-              EOF
   key_name    = "dev"
   tags        = local.tags
   tags_as_map = local.tags_as_map
