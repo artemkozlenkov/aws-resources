@@ -57,15 +57,13 @@ module "asg_sg" {
   version = "~> 4.0"
 
   name        = local.name
-  description = "A security group"
+  description = "A ${local.name} security group"
   vpc_id      = data.aws_vpc.cluster.id
 
-  computed_ingress_rules           = ["ssh-tcp","http-80"]
-  number_of_computed_ingress_rules = 2
+  ingress_rules           = ["ssh-tcp","http-80"]
   ingress_cidr_blocks              = ["0.0.0.0/0"]
 
-  computed_egress_rules           = ["all-all"]
-  number_of_computed_egress_rules = 1
+  egress_rules = ["http-80-tcp"]
   egress_cidr_blocks              = ["0.0.0.0/0"]
 
   tags = local.tags_as_map
