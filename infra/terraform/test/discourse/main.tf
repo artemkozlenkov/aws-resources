@@ -170,6 +170,8 @@ module "default_lt" {
   # Autoscaling group
   name = "default-lt-${local.name}"
 
+  security_groups = [module.asg_sg.security_group_id]
+
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
   min_size            = 0
   max_size            = 1
