@@ -181,7 +181,7 @@ module "default_lt" {
   use_lt    = true
   create_lt = true
 
-  image_id      = data.aws_ami.discourse.id
+  image_id      = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
   user_data   = <<-EOF
