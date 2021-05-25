@@ -60,20 +60,13 @@ module "asg_sg" {
   description = "A security group"
   vpc_id      = data.aws_vpc.cluster.id
 
+  computed_ingress_rules           = ["ssh-tcp"]
+  number_of_computed_ingress_rules = 1
   ingress_cidr_blocks              = ["0.0.0.0/0"]
-  computed_ingress_with_source_security_group_id = [
-    {
-      rule                     = "http-80-tcp"
-      source_security_group_id = module.alb_http_sg.security_group_id
-    },
-    {
-      rule                     = "ssh-tcp"
-      source_security_group_id = module.alb_http_sg.security_group_id
-    }
-  ]
-  number_of_computed_ingress_with_source_security_group_id = 2
 
-  egress_rules = ["all-all"]
+  computed_egress_rules           = ["all-all"]
+  number_of_computed_egress_rules = 1
+  egress_cidr_blocks              = ["0.0.0.0/0"]
 
   tags = local.tags_as_map
 }
@@ -137,7 +130,7 @@ module "alb" {
 
   vpc_id          = data.aws_vpc.cluster.id
   subnets         = data.aws_subnet_ids.public.ids
-  security_groups = [module.alb_http_sg.security_group_id]
+  security_groups = [module.alb_http_sg.security_group_id, module.asg_sg]
 
   http_tcp_listeners = [
     {
