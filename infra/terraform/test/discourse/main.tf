@@ -61,7 +61,7 @@ module "asg_sg" {
   vpc_id      = data.aws_vpc.cluster.id
 
   computed_ingress_rules           = ["ssh-tcp","http-80"]
-  number_of_computed_ingress_rules = 1
+  number_of_computed_ingress_rules = 2
   ingress_cidr_blocks              = ["0.0.0.0/0"]
 
   computed_egress_rules           = ["all-all"]
