@@ -60,6 +60,7 @@ module "asg_sg" {
   description = "A security group"
   vpc_id      = data.aws_vpc.cluster.id
 
+  ingress_cidr_blocks              = ["0.0.0.0/0"]
   computed_ingress_with_source_security_group_id = [
     {
       rule                     = "http-80-tcp"
