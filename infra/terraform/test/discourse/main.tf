@@ -186,8 +186,9 @@ module "default_lt" {
 
   user_data   = <<-EOF
               #!/bin/bash
-              echo "This is a test discourse-ec2-instance" > index.html
-              sudo python2 -m SimpleHTTPServer 80
+              sudo apt update; sudo apt upgrade -y; iptables -F; service sshd restart;
+//              echo "This is a test discourse-ec2-instance" > index.html
+//              sudo python2 -m SimpleHTTPServer 80
               EOF
   key_name    = "dev"
   tags        = local.tags
