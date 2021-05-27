@@ -34,6 +34,10 @@ module "vpc" {
   azs = data.aws_availability_zones.available.names
 
   private_subnets = var.private-subnets
+  enable_nat_gateway  = true
+  single_nat_gateway  = false
+  reuse_nat_ips       = true
+  external_nat_ip_ids = aws_eip.nat.*.id
   private_subnet_tags = {
     Name = "private-subnet"
   }
@@ -42,8 +46,6 @@ module "vpc" {
   public_subnet_tags = {
     Name = "public-subnet"
   }
-
-  enable_nat_gateway = false # false is just faster
 
   tags = {
     Environment = local.environment
