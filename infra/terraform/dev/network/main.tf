@@ -56,8 +56,6 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "gw" {
-  for_each = data.aws_subnet_ids.public_subnets.ids
-
   allocation_id = aws_eip.nat.id
-  subnet_id     = each.value
+  subnet_id     = data.aws_subnet_ids.public_subnets.id
 }
