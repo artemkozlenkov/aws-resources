@@ -88,7 +88,7 @@ module "default_lt" {
 
   security_groups = [module.asg_sg.security_group_id]
 
-  target_group_arns = data.terraform_remote_state.alb.all.arns
+  target_group_arns = data.terraform_remote_state.alb.outputs.target_group_arns
 
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
   min_size            = 0

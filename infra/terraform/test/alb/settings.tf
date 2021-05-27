@@ -39,6 +39,6 @@ data "terraform_remote_state" "vpc" {
 
 variable "aws_region" {}
 
-output "all" {
-  value = module.alb
+output "target_group_arns" {
+  value = module.alb.target_group_arns
 }
