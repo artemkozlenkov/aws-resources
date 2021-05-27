@@ -16,45 +16,6 @@ locals {
   }
 }
 
-data "aws_ami" "discourse" {
-  most_recent = true
-  owners      = ["self"]
-
-  filter {
-    name   = "name"
-    values = ["*discourse*"]
-  }
-}
-
-data "aws_vpc" "cluster" {
-  filter {
-    name   = "tag:Name"
-    values = ["cluster"]
-  }
-}
-
-data "aws_subnet_ids" "private" {
-  vpc_id = data.aws_vpc.cluster.id
-  filter {
-    name   = "tag:Name"
-    values = ["private*"]
-  }
-}
-
-data "aws_subnet_ids" "public" {
-  vpc_id = data.aws_vpc.cluster.id
-  filter {
-    name   = "tag:Name"
-    values = ["public*"]
-  }
-}
-
-data "template_file" "init" {
-  template = "${file("${path.module}/init.sh")}"
-  vars = {
-//    consul_address = "${aws_instance.consul.private_ip}"
-  }
-}
 ################################################################################
 # Supporting Resources
 ################################################################################
@@ -113,49 +74,6 @@ resource "aws_iam_role" "ssm" {
   EOT
 }
 
-module "alb_http_sg" {
-  source  = "terraform-aws-modules/security-group/aws//modules/http-80"
-  version = "~> 4.0"
-
-  name        = "${local.name}-alb-http"
-  vpc_id      = data.aws_vpc.cluster.id
-  description = "Security group for ${local.name}"
-
-  ingress_cidr_blocks = ["0.0.0.0/0"]
-
-  tags = local.tags_as_map
-}
-
-module "alb" {
-  source  = "terraform-aws-modules/alb/aws"
-  version = "~> 6.0"
-
-  name = local.name
-
-  vpc_id          = data.aws_vpc.cluster.id
-  subnets         = data.aws_subnet_ids.public.ids
-  security_groups = [module.alb_http_sg.security_group_id]
-
-  http_tcp_listeners = [
-    {
-      port               = 80
-      protocol           = "HTTP"
-      target_group_index = 0
-    }
-  ]
-
-  target_groups = [
-    {
-      name             = local.name
-      backend_protocol = "HTTP"
-      backend_port     = 80
-      target_type      = "instance"
-    },
-  ]
-
-  tags = local.tags_as_map
-}
-
 ################################################################################
 # Default
 ################################################################################
@@ -170,7 +88,7 @@ module "default_lt" {
 
   security_groups = [module.asg_sg.security_group_id]
 
-  target_group_arns = module.alb.target_group_arns
+  target_group_arns = data.terraform_remote_state.alb.all.arns
 
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
   min_size            = 0

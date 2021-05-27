@@ -48,3 +48,51 @@ data "aws_ami" "ubuntu" {
 
   owners = ["099720109477"] # Canonical
 }
+data "aws_ami" "discourse" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["*discourse*"]
+  }
+}
+data "aws_vpc" "cluster" {
+  filter {
+    name   = "tag:Name"
+    values = ["cluster"]
+  }
+}
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.cluster.id
+  filter {
+    name   = "tag:Name"
+    values = ["private*"]
+  }
+}
+data "aws_subnet_ids" "public" {
+  vpc_id = data.aws_vpc.cluster.id
+  filter {
+    name   = "tag:Name"
+    values = ["public*"]
+  }
+}
+data "template_file" "init" {
+  template = "${file("${path.module}/init.sh")}"
+  vars = {
+    //    consul_address = "${aws_instance.consul.private_ip}"
+  }
+}
+data "aws_lb" "alb" {
+  tags = {}
+}
+data "terraform_remote_state" "alb" {
+  backend = "remote"
+
+  config = {
+    organization = "kozlenkovde"
+    workspaces = {
+      name = "alb"
+    }
+  }
+}
