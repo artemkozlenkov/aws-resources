@@ -11,13 +11,18 @@ variable "public-subnets" {
   type    = list(string)
   default = ["10.1.11.0/24", "10.1.12.0/24"]
 }
-
 variable "aws_region" {}
 
 data "aws_availability_zones" "available" {
   state = "available"
 }
-
+data "aws_subnet_ids" "public_subnets" {
+  vpc_id = module.vpc.vpc_id
+  filter {
+    name   = "tag:Name"
+    values = ["public*"]
+  }
+}
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2.0"
@@ -44,4 +49,15 @@ module "vpc" {
     Environment = local.environment
     Name        = local.name
   }
+}
+
+resource "aws_eip" "nat" {
+  vpc = true
+}
+
+resource "aws_nat_gateway" "gw" {
+  for_each = data.aws_subnet_ids.public_subnets.ids
+
+  allocation_id = aws_eip.nat.id
+  subnet_id     = each.value
 }
