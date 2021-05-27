@@ -39,10 +39,6 @@ data "terraform_remote_state" "vpc" {
 }
 
 variable "aws_region" {}
-variable "asg_name" {}
-variable "instance_type" {
-  default = "t2.micro"
-}
 
 output "all" {
   value = module.alb
