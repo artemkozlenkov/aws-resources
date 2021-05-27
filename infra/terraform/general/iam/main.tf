@@ -1,5 +1,5 @@
 locals {
-  name = "discourse-asg"
+  name   = "discourse-asg"
   region = var.aws_region
 
   tags_as_map = {

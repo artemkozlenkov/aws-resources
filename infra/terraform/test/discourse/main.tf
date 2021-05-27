@@ -48,15 +48,19 @@ module "default_lt" {
   # Autoscaling group
   name = "default-lt-${local.name}"
 
-  security_groups = [module.asg_sg.security_group_id]
-  target_group_arns = data.terraform_remote_state.alb.outputs.target_group_arns
+  security_groups     = [module.asg_sg.security_group_id]
+  target_group_arns   = data.terraform_remote_state.alb.outputs.target_group_arns
   vpc_zone_identifier = data.aws_subnet_ids.private.ids
 
-  delete_on_termination = true
+  ebs_block_device = [
+    {
+      delete_on_termination = true
+    }
+  ]
 
-  min_size            = 0
-  max_size            = 1
-  desired_capacity    = 1
+  min_size         = 0
+  max_size         = 1
+  desired_capacity = 1
 
   # Launch template
   use_lt    = true
