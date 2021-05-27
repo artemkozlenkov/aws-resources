@@ -4,11 +4,11 @@ locals {
 }
 
 variable "private-subnets" {
-  type = list(string)
+  type    = list(string)
   default = ["10.1.1.0/24", "10.1.2.0/24"]
 }
 variable "public-subnets" {
-  type = list(string)
+  type    = list(string)
   default = ["10.1.11.0/24", "10.1.12.0/24"]
 }
 

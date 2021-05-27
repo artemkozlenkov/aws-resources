@@ -12,8 +12,8 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-output "vpc" {
-  value = module.vpc
+output "id" {
+  value = module.vpc.vpc_id
 }
 
 output "public_subnets" {

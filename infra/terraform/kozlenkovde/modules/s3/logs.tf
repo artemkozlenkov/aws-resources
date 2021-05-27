@@ -1,6 +1,6 @@
 # Creates bucket to store log
 resource "aws_s3_bucket" "log" {
-  bucket        = local.logs
+  bucket = local.logs
   acl    = "log-delivery-write"
 
   # Comment the following line if you are uncomfortable with Terraform destroying the bucket even if this one is not empty

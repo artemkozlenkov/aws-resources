@@ -11,7 +11,7 @@ data "aws_route53_zone" "main" {
 # s3 buckets module
 module "s3_buckets" {
   source = "./modules/s3"
-  fqdn = var.fqdn
+  fqdn   = var.fqdn
 }
 
 # acm module
@@ -22,11 +22,11 @@ module "acm" {
 
 # cdn module
 module "cdn" {
-  source        = "./modules/cdn"
-  fqdn          = var.fqdn
+  source = "./modules/cdn"
+  fqdn   = var.fqdn
 
-  bucket_root     = module.s3_buckets.bucket_main
-  bucket_log      = module.s3_buckets.bucket_log
+  bucket_root = module.s3_buckets.bucket_main
+  bucket_log  = module.s3_buckets.bucket_log
 
   website_certificate_arn = module.acm.website_certificate_arn
 }
@@ -34,7 +34,7 @@ module "cdn" {
 # route53 module
 module "route53" {
   source = "./modules/route53"
-  fqdn          = var.fqdn
+  fqdn   = var.fqdn
 
-  website_cdn_root        = module.cdn.cdn_root
+  website_cdn_root = module.cdn.cdn_root
 }

@@ -42,7 +42,7 @@ data "aws_subnet" "public" {
     name   = "tag:Name"
     values = ["public-subnet"]
   }
-  vpc_id = data.aws_vpc.selected.id
+  vpc_id            = data.aws_vpc.selected.id
   availability_zone = "eu-central-1a"
 }
 data "aws_ami" "ubuntu" {

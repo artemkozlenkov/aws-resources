@@ -1,7 +1,7 @@
 # Creates bucket to store the static website
 resource "aws_s3_bucket" "main" {
-  bucket        = local.main
-  acl      = "public-read"
+  bucket = local.main
+  acl    = "public-read"
 
   # Comment the following line if you are uncomfortable with Terraform destroying the bucket even if not empty
   force_destroy = true
