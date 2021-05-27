@@ -16,7 +16,7 @@ variable "aws_region" {}
 data "aws_availability_zones" "available" {
   state = "available"
 }
-data "aws_subnet_ids" "public_subnets" {
+data "aws_subnet" "public" {
   vpc_id = module.vpc.vpc_id
   filter {
     name   = "tag:Name"
@@ -57,5 +57,5 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "gw" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = data.aws_subnet_ids.public_subnets.ids[0]
+  subnet_id     = data.aws_subnet.public.id
 }
