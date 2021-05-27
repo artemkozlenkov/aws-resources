@@ -83,9 +83,6 @@ data "template_file" "init" {
     //    consul_address = "${aws_instance.consul.private_ip}"
   }
 }
-data "aws_lb" "alb" {
-  tags = {}
-}
 data "terraform_remote_state" "alb" {
   backend = "remote"
 
