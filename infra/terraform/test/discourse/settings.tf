@@ -46,7 +46,7 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["self"] # Canonical
 }
 data "aws_ami" "discourse" {
   most_recent = true
