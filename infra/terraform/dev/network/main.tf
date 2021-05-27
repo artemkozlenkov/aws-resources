@@ -34,13 +34,11 @@ module "vpc" {
   azs = data.aws_availability_zones.available.names
 
   private_subnets = var.private-subnets
-  enable_nat_gateway  = true
-  single_nat_gateway  = true
-  reuse_nat_ips       = true
-  external_nat_ip_ids = aws_eip.nat.*.id
   private_subnet_tags = {
     Name = "private-subnet"
   }
+  enable_nat_gateway = true
+  single_nat_gateway = true
 
   public_subnets = var.public-subnets
   public_subnet_tags = {
@@ -53,11 +51,3 @@ module "vpc" {
   }
 }
 
-resource "aws_eip" "nat" {
-  vpc = true
-}
-
-resource "aws_nat_gateway" "gw" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = element(tolist(data.aws_subnet_ids.public.ids), 0)
-}
