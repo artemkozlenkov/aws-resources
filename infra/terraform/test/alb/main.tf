@@ -26,7 +26,7 @@ module "alb" {
   name = local.name
 
   vpc_id          = data.terraform_remote_state.vpc.outputs.id
-  subnets         = data.terraform_remote_state.vpc.outputs.pbulic_subnets
+  subnets         = data.terraform_remote_state.vpc.outputs.public_subnets
   security_groups = [module.alb_http_sg.security_group_id]
 
   http_tcp_listeners = [
