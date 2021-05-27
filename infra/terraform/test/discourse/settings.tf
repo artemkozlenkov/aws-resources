@@ -30,7 +30,7 @@ terraform {
 variable "aws_region" {}
 variable "asg_name" {}
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t3a.small"
 }
 
 data "aws_ami" "ubuntu" {
