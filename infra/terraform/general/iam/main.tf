@@ -1,61 +1,47 @@
-resource "aws_iam_group" "developers" {
-  name = "developers"
-  path = "/users/"
-}
-resource "aws_iam_group_policy" "my_developer_policy" {
-  name  = "my_developer_policy"
-  group = aws_iam_group.developers.name
+locals {
+  name = "discourse-asg"
+  region = var.aws_region
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ec2:Describe*",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+  tags_as_map = {
+    Owner       = "user"
+    Environment = "test"
+  }
 }
 
-module "iam_user" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version = "~> 3.0"
+resource "aws_iam_service_linked_role" "autoscaling" {
+  aws_service_name = "autoscaling.amazonaws.com"
+  description      = "A service linked role for autoscaling"
+  custom_suffix    = local.name
 
-  name          = "artem"
-  force_destroy = true
-
-  pgp_key = "keybase:test"
-
-  password_reset_required = false
+  # Sometimes good sleep is required to have some IAM resources created before they can be used
+  provisioner "local-exec" {
+    command = "sleep 10"
+  }
 }
 
-resource "aws_iam_instance_profile" "test_profile" {
-  name = "test_cluster_profile"
-  role = aws_iam_role.role.name
+resource "aws_iam_instance_profile" "ssm" {
+  name = "discourse-${local.name}"
+  role = aws_iam_role.ssm.name
+  tags = local.tags_as_map
 }
 
-resource "aws_iam_role" "role" {
-  name = "test_cluster_role"
-  path = "/"
+resource "aws_iam_role" "ssm" {
+  name = "discourse-${local.name}"
+  tags = local.tags_as_map
 
-  assume_role_policy = <<EOF
-{
+  assume_role_policy = <<-EOT
+  {
     "Version": "2012-10-17",
     "Statement": [
-        {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-               "Service": "ec2.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
-        }
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
     ]
-}
-EOF
+  }
+  EOT
 }
