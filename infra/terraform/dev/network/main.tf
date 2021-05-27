@@ -35,7 +35,7 @@ module "vpc" {
 
   private_subnets = var.private-subnets
   enable_nat_gateway  = true
-  single_nat_gateway  = false
+  single_nat_gateway  = true
   reuse_nat_ips       = true
   external_nat_ip_ids = aws_eip.nat.*.id
   private_subnet_tags = {
