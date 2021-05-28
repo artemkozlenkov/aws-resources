@@ -55,6 +55,7 @@ module "default_lt" {
   ebs_block_device = [
     {
       delete_on_termination = true
+      volume_size           = 20
     }
   ]
 
