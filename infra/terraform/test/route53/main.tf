@@ -49,8 +49,12 @@ resource "aws_route53_record" "www_forum" {
   zone_id = data.aws_route53_zone.blog.zone_id
   name    = "forum.${var.fqdn}"
   type    = "A"
-  ttl     = "300"
-  records = [data.terraform_remote_state.alb.outputs.public_dns]
+
+  alias {
+    name                   = data.terraform_remote_state.alb.outputs.dns_name
+    zone_id                = data.terraform_remote_state.alb.outputs.zone_id
+    evaluate_target_health = true
+  }
 }
 
 output "forum_address" {
