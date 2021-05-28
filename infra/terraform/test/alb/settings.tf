@@ -43,6 +43,10 @@ output "target_group_arns" {
   value = module.alb.target_group_arns
 }
 
-output "public_dns" {
+output "dns" {
   value = module.alb.lb_dns_name
+}
+
+output "zone_id" {
+  value = module.alb.lb_zone_id
 }
