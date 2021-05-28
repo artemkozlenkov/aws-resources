@@ -45,7 +45,7 @@ data "terraform_remote_state" "alb" {
   }
 }
 
-resource "aws_route53_record" "www-blog" {
+resource "aws_route53_record" "www_blog" {
   zone_id = data.aws_route53_zone.blog.zone_id
   name    = var.blog_fqdn
   type    = "A"
@@ -53,4 +53,6 @@ resource "aws_route53_record" "www-blog" {
   records = [data.terraform_remote_state.alb.outputs.public_dns]
 }
 
-
+output "blog_address" {
+  value = aws_route53_record.www_blog.fqdn
+}
