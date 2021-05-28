@@ -28,7 +28,7 @@ source "amazon-ebs" "ubuntu20-ami" {
   launch_block_device_mappings {
     device_name = "/dev/sda1"
     encrypted   = true
-    volume_size = 10
+    volume_size = 20
   }
 
   ssh_username          = "ubuntu"
@@ -43,12 +43,19 @@ build {
     destination = "~/.ssh/github"
   }
 
+  provisioner "file" {
+    source      = "./scripts/app.yml"
+    destination = "~/app.yml"
+
+  }
+
   provisioner "shell" {
     expect_disconnect = true
     script            = "./scripts/setup.sh"
   }
 
   provisioner "shell" {
+    expect_disconnect = true
     script = "./scripts/after_restart.sh"
   }
 }

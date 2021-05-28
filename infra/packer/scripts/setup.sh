@@ -10,7 +10,8 @@ main() {
     curl \
     gnupg \
     lsb-release \
-    net-tools
+    net-tools \
+    awscli
 
   sudo snap install ruby --classic
 
@@ -24,10 +25,10 @@ main() {
   sudo apt-get install -y docker-ce docker-ce-cli containerd.io
   sudo usermod -aG docker $USER
 
-  sudo echo "{\"experimental\": true}" > /tmp/daemon.json
+  sudo echo "{\"experimental\": true}" >/tmp/daemon.json
   sudo cp /tmp/daemon.json /etc/docker/daemon.json
 
-  sudo dpkg-reconfigure -plow unattended-upgrades -y
+  sudo dpkg-reconfigure --frontend noninteractive -plow unattended-upgrades
 
   sudo reboot now
 }
