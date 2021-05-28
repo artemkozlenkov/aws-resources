@@ -17,32 +17,40 @@ terraform {
     }
   }
 
+
   backend "remote" {
     hostname     = "app.terraform.io"
     organization = "kozlenkovde"
     workspaces {
-      name = "alb"
+      name = "route53"
     }
   }
 }
 
-data "terraform_remote_state" "vpc" {
+variable "blog_fqdn" {}
+variable "aws_region" {}
+
+data "aws_route53_zone" "blog" {
+  name         = var.blog_fqdn
+  private_zone = false
+}
+data "terraform_remote_state" "alb" {
   backend = "remote"
 
   config = {
     organization = "kozlenkovde"
     workspaces = {
-      name = "network"
+      name = "alb"
     }
   }
 }
 
-variable "aws_region" {}
-
-output "target_group_arns" {
-  value = module.alb.target_group_arns
+resource "aws_route53_record" "www-blog" {
+  zone_id = data.aws_route53_zone.blog.zone_id
+  name    = var.blog_fqdn
+  type    = "A"
+  ttl     = "300"
+  records = [data.terraform_remote_state.alb.outputs.public_dns]
 }
 
-output "public_dns" {
-  value = module.alb.lb_dns_name
-}
+

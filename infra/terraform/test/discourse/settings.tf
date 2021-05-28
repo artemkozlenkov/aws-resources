@@ -32,7 +32,6 @@ variable "asg_name" {}
 variable "instance_type" {
   default = "t3a.small"
 }
-
 data "aws_ami" "ubuntu" {
   most_recent = true
 
