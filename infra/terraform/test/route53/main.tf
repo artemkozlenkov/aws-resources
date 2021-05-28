@@ -27,11 +27,11 @@ terraform {
   }
 }
 
-variable "blog_fqdn" {}
+variable "fqdn" {}
 variable "aws_region" {}
 
 data "aws_route53_zone" "blog" {
-  name         = var.blog_fqdn
+  name         = var.fqdn
   private_zone = false
 }
 data "terraform_remote_state" "alb" {
@@ -47,7 +47,7 @@ data "terraform_remote_state" "alb" {
 
 resource "aws_route53_record" "www_blog" {
   zone_id = data.aws_route53_zone.blog.zone_id
-  name    = var.blog_fqdn
+  name    = "blog.${var.fqdn}"
   type    = "A"
   ttl     = "300"
   records = [data.terraform_remote_state.alb.outputs.public_dns]
