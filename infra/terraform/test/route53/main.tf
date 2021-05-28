@@ -47,7 +47,7 @@ data "terraform_remote_state" "alb" {
 
 resource "aws_route53_record" "www_blog" {
   zone_id = data.aws_route53_zone.blog.zone_id
-  name    = "blog.${var.fqdn}"
+  name    = "forum.${var.fqdn}"
   type    = "A"
   ttl     = "300"
   records = [data.terraform_remote_state.alb.outputs.public_dns]
