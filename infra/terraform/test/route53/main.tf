@@ -51,7 +51,7 @@ resource "aws_route53_record" "www_forum" {
   type    = "A"
 
   alias {
-    name                   = data.terraform_remote_state.alb.outputs.dns_name
+    name                   = data.terraform_remote_state.alb.outputs.dns
     zone_id                = data.terraform_remote_state.alb.outputs.zone_id
     evaluate_target_health = true
   }
