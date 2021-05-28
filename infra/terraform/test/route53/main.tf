@@ -53,6 +53,6 @@ resource "aws_route53_record" "www_forum" {
   records = [data.terraform_remote_state.alb.outputs.public_dns]
 }
 
-output "blog_address" {
+output "forum_address" {
   value = aws_route53_record.www_forum.fqdn
 }
