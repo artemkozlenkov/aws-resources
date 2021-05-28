@@ -92,3 +92,7 @@ data "terraform_remote_state" "alb" {
     }
   }
 }
+
+output "asg_name" {
+  value = module.default_lt.autoscaling_group_name
+}
