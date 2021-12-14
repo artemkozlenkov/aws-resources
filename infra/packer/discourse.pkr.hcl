@@ -5,7 +5,7 @@ packer {
 locals { timestamp = lower(regex_replace(timestamp(), "[- TZ:]", "")) }
 
 variable "ubuntu_lts_base" {
-  default = "ami-0767046d1677be5a0"
+  default = "ami-1230912301"
 }
 
 variable "instance_type" {

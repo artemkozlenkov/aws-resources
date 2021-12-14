@@ -14,17 +14,17 @@ env:
 
   ## TODO: The domain name this Discourse instance will respond to
   ## Required. Discourse will not work with a bare IP number.
-  DISCOURSE_HOSTNAME: forum.softawebit.de
+  DISCOURSE_HOSTNAME: forum.your-dns.de
 
   ## TODO: List of comma delimited emails that will be made admin and developer
   DISCOURSE_DEVELOPER_EMAILS: artem.kozlenkov@gmail.com
 
   DISCOURSE_SMTP_ADDRESS: email-smtp.eu-west-2.amazonaws.com
   DISCOURSE_SMTP_PORT: 587
-  DISCOURSE_SMTP_USER_NAME: "AKIATWG3ZWRLOTENIXEL"
-  DISCOURSE_SMTP_PASSWORD: "BEaaNEucTtzKR2x75ewfpROvMWDaXeEzzbG8d2qCUb3v"
+  DISCOURSE_SMTP_USER_NAME: "AWS_ACCESS_KEY_ID"
+  DISCOURSE_SMTP_PASSWORD: "AWS_SECRET_ACCESS_KEY"
   DISCOURSE_SMTP_ENABLE_START_TLS: true
-  DISCOURSE_NOTIFICATION_EMAIL: softawebit@gmail.com
+  DISCOURSE_NOTIFICATION_EMAIL: your-email@gmail.com
 
 #docker_args:
 #  - '--network nginx-proxy'
@@ -40,7 +40,7 @@ volumes:
 ## Any custom commands to run after building
 run:
   - exec: sudo apt update && sudo apt upgrade -y
-  - exec: rails r "SiteSetting.notification_email='softawebit@gmail.com'"
+  - exec: rails r "SiteSetting.notification_email='your-email@gmail.com'"
 
 hooks:
   after_code:
