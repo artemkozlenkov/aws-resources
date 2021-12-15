@@ -1,0 +1,6 @@
+**/.terraform
+**/.terraform.*
+**/terraform.tf*
+**/terraform.tf*
+**/.idea
+infra/packer/keys/*
